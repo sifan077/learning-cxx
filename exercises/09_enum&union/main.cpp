@@ -8,20 +8,21 @@
 // 因此 `enum` 定义会污染命名空间。
 enum ColorEnum : unsigned char {
     COLOR_RED = 31,
-    COLOR_GREEN,
-    COLOR_YELLOW,
-    COLOR_BLUE,
+    COLOR_GREEN, // COLOR_GREEN = 32
+    COLOR_YELLOW, // COLOR_YELLOW = 33
+    COLOR_BLUE,  // COLOR_BLUE = 34
 };
 
 // 有作用域枚举型是 C++ 引入的类型安全枚举。
 // 其内部标识符需要带前缀引用，如 `Color::Red`。
 // 作用域枚举型可以避免命名空间污染，并提供类型安全保证。
 enum class Color : int {
-    Red = COLOR_RED,
-    Green,
-    Yellow,
-    Blue,
+    Red = COLOR_RED, // COLOR_RED = 31
+    Green, // COLOR_GREEN = 32
+    Yellow, // COLOR_YELLOW = 33
+    Blue, // COLOR_BLUE = 34
 };
+
 
 ColorEnum convert_by_pun(Color c) {
     // READ: <https://zh.cppreference.com/w/cpp/language/union>
@@ -34,9 +35,11 @@ ColorEnum convert_by_pun(Color c) {
         ColorEnum e;
         Color c;
     };
-
+    
     TypePun pun;
     // TODO: 补全类型双关转换
+    pun.c = c;
+    
 
     return pun.e;
 }

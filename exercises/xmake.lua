@@ -4,6 +4,31 @@ set_warnings("all")
 set_kind("binary")
 set_languages("cxx17")
 
+-- Windows 平台特定配置
+if is_plat("windows") then
+    -- 使用 GCC 工具链而不是 MSVC
+    set_toolchains("gcc")
+    
+    -- 可选：明确指定 GCC 工具路径（如果不在系统 PATH 中）
+    -- set_toolset("cc", "gcc")
+    -- set_toolset("cxx", "g++")
+    -- set_toolset("ld", "g++")
+    
+    -- 可选：设置 MinGW 特定的链接选项
+    add_ldflags("-static")
+end
+
+-- 可选：针对不同构建模式的配置
+on_config(function(target)
+    if is_mode("debug") then
+        target:set("symbols", "debug")
+        target:add("cxflags", "-g3", "-O0")
+    elseif is_mode("release") then
+        target:set("optimize", "fastest")
+        target:add("cxflags", "-O3")
+    end
+end)
+
 -- 格式化输出
 target("exercise00")
     add_files("00_hello_world/main.cpp")
